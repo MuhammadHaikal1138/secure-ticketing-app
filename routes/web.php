@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ValidationLabController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TicketController;
 
@@ -54,6 +55,7 @@ Route::resource('tickets', TicketController::class);
 // ============================================
 // Jika ingin mendefinisikan secara manual:
 // 
+
 Route::get('/tickets', [TicketController::class, 'index'])->name('tickets.index');
 Route::get('/tickets/create', [TicketController::class, 'create'])->name('tickets.create');
 Route::post('/tickets', [TicketController::class, 'store'])->name('tickets.store');
@@ -61,3 +63,27 @@ Route::get('/tickets/{ticket}', [TicketController::class, 'show'])->name('ticket
 Route::get('/tickets/{ticket}/edit', [TicketController::class, 'edit'])->name('tickets.edit');
 Route::put('/tickets/{ticket}', [TicketController::class, 'update'])->name('tickets.update');
 Route::delete('/tickets/{ticket}', [TicketController::class, 'destroy'])->name('tickets.destroy');
+
+Route::prefix('validation-lab')->name('validation-lab.')->group(function () {
+    // Index - Menu Lab
+    Route::get('/', [ValidationLabController::class, 'index'])
+        ->name('index');
+    
+    // ----- VULNERABLE FORM -----
+    // Form tanpa server-side validation
+    Route::get('/vulnerable', [ValidationLabController::class, 'vulnerableForm'])
+        ->name('vulnerable');
+    Route::post('/vulnerable', [ValidationLabController::class, 'vulnerableSubmit'])
+        ->name('vulnerable.submit');
+    Route::post('/vulnerable/clear', [ValidationLabController::class, 'vulnerableClear'])
+        ->name('vulnerable.clear');
+    
+    // ----- SECURE FORM -----
+    // Form dengan server-side validation
+    Route::get('/secure', [ValidationLabController::class, 'secureForm'])
+        ->name('secure');
+    Route::post('/secure', [ValidationLabController::class, 'secureSubmit'])
+        ->name('secure.submit');
+    Route::post('/secure/clear', [ValidationLabController::class, 'secureClear'])
+        ->name('secure.clear');
+});

@@ -6,6 +6,8 @@ use App\Models\Ticket;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
+use App\Http\Requests\StoreTicketRequest;
+use App\Http\Requests\UpdateTicketRequest;
 
 /**
  * TicketController
@@ -62,28 +64,15 @@ class TicketController extends Controller
      * @param Request $request
      * @return RedirectResponse
      */
-    public function store(Request $request): RedirectResponse
+    public function store(StoreTicketRequest $request): RedirectResponse
     {
-        // Validasi input
-        // Jika gagal, otomatis redirect back dengan error messages
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string|min:10',
-            'priority' => 'required|in:low,medium,high',
-        ]);
-
-        // Tambahkan user_id dari user yang sedang login
-        // Untuk sementara, kita hardcode user_id = 1 (untuk testing)
-        // Nanti di materi Auth akan diganti dengan auth()->id()
-        $validated['user_id'] = auth()->id() ?? 1;
-
-        // Simpan tiket baru
-        $ticket = Ticket::create($validated);
-
-        // Redirect ke halaman index dengan pesan sukses
-        return redirect()
-            ->route('tickets.index')
-            ->with('success', 'Tiket berhasil dibuat!');
+        // Validasi OTOMATIS terjadi sebelum method dipanggil!
+    // Jika gagal, auto redirect back dengan errors
+    
+    $ticket = Ticket::create($request->validated());
+    return redirect()
+        ->route('tickets.show', $ticket)
+        ->with('success', 'Tiket berhasil dibuat!');
     }
 
     /**
@@ -127,23 +116,12 @@ class TicketController extends Controller
      * @param Ticket $ticket
      * @return RedirectResponse
      */
-    public function update(Request $request, Ticket $ticket): RedirectResponse
+    public function update(UpdateTicketRequest $request, Ticket $ticket): RedirectResponse
     {
-        // Validasi input
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string|min:10',
-            'status' => 'required|in:open,in_progress,closed',
-            'priority' => 'required|in:low,medium,high',
-        ]);
-
-        // Update tiket
-        $ticket->update($validated);
-
-        // Redirect ke halaman detail dengan pesan sukses
-        return redirect()
-            ->route('tickets.show', $ticket)
-            ->with('success', 'Tiket berhasil diupdate!');
+        $ticket->update($request->validated());
+    return redirect()
+        ->route('tickets.show', $ticket)
+        ->with('success', 'Tiket berhasil diperbarui!');
     }
 
     /**
