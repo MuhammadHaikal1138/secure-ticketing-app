@@ -67,7 +67,7 @@
                     </li>
 
                     {{-- Demo Blade (Hari 4) --}}
-                    {{-- <li class="nav-item dropdown">
+                    <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle {{ request()->routeIs('demo-blade.*') ? 'active' : '' }}"
                             href="#" role="button" data-bs-toggle="dropdown">
                             <i class="bi bi-code-slash"></i> Demo Blade
@@ -95,7 +95,7 @@
                     </li>
 
                     {{-- XSS Lab (Hari 4) --}}
-                    {{-- <li class="nav-item dropdown">
+                    <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle {{ request()->routeIs('xss-lab.*') ? 'active' : '' }}"
                             href="#" role="button" data-bs-toggle="dropdown">
                             <i class="bi bi-shield-exclamation"></i> XSS Lab
@@ -136,10 +136,10 @@
                                     <i class="bi bi-lock"></i> Secure
                                 </a></li>
                         </ul>
-                    </li> --}}
+                    </li>
 
                     {{-- Security Testing (Hari 5) - NEW --}}
-                    {{-- <li class="nav-item dropdown">
+                    <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle {{ request()->routeIs('security-testing.*') ? 'active' : '' }}"
                             href="#" role="button" data-bs-toggle="dropdown">
                             <i class="bi bi-shield-shaded"></i> Security Testing
@@ -167,7 +167,7 @@
                                     <i class="bi bi-clipboard-check text-warning"></i> Audit Checklist
                                 </a></li>
                         </ul>
-                    </li> --}}
+                    </li>
 
                     {{-- Input Validation  --}}
                     <li class="nav-item dropdown">

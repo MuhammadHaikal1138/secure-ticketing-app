@@ -68,8 +68,9 @@ class TicketController extends Controller
     {
         // Validasi OTOMATIS terjadi sebelum method dipanggil!
     // Jika gagal, auto redirect back dengan errors
-    
-    $ticket = Ticket::create($request->validated());
+    $validated = $request->validated();
+    $validated['user_id'] = 1;
+    $ticket = Ticket::create($validated);
     return redirect()
         ->route('tickets.show', $ticket)
         ->with('success', 'Tiket berhasil dibuat!');
@@ -118,7 +119,9 @@ class TicketController extends Controller
      */
     public function update(UpdateTicketRequest $request, Ticket $ticket): RedirectResponse
     {
-        $ticket->update($request->validated());
+        $validated = $request->validated();
+        $validated['user_id'] = 1;
+        $ticket->update($validated);
     return redirect()
         ->route('tickets.show', $ticket)
         ->with('success', 'Tiket berhasil diperbarui!');

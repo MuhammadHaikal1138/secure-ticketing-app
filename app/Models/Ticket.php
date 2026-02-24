@@ -116,4 +116,9 @@ class Ticket extends Model
             default => 'bg-secondary',
         };
     }
+
+    public function comments()
+{
+    return $this->hasMany(XssLabComment::class, 'ticket_id');
+}
 }
