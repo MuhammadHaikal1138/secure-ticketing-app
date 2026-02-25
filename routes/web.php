@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\CsrfLabController;
 use App\Http\Controllers\DemoBladeController;
 use App\Http\Controllers\SecurityTestController;
 use App\Http\Controllers\ValidationLabController;
@@ -159,3 +160,51 @@ Route::prefix('security-testing')->name('security-testing.')->group(function () 
     // Audit Checklist
     Route::get('/audit', [SecurityTestController::class, 'auditChecklist'])->name('audit');
 });
+
+Route::prefix('csrf-lab')->name('csrf-lab.')->group(function () {
+    // Index - Menu Lab
+    Route::get('/', [CsrfLabController::class, 'index'])
+        ->name('index');
+    
+    // How It Works - Penjelasan CSRF
+    Route::get('/how-it-works', [CsrfLabController::class, 'howItWorks'])
+        ->name('how-it-works');
+    
+    // Attack Demo - Simulasi serangan
+    Route::get('/attack-demo', [CsrfLabController::class, 'attackDemo'])
+        ->name('attack-demo');
+    
+    // Protection Demo - Demo protection
+    Route::get('/protection-demo', [CsrfLabController::class, 'protectionDemo'])
+        ->name('protection-demo');
+    
+    // AJAX Demo - CSRF untuk AJAX
+    Route::get('/ajax-demo', [CsrfLabController::class, 'ajaxDemo'])
+        ->name('ajax-demo');
+    
+    // ----- ACTION ROUTES -----
+    
+    // Secure transfer (dengan CSRF protection normal)
+    Route::post('/secure-transfer', [CsrfLabController::class, 'secureTransfer'])
+        ->name('secure-transfer');
+    
+    // Protected action
+    Route::post('/protected-action', [CsrfLabController::class, 'protectedAction'])
+        ->name('protected-action');
+    
+    // AJAX action
+    Route::post('/ajax-action', [CsrfLabController::class, 'ajaxAction'])
+        ->name('ajax-action');
+    
+    // Reset demo data
+    Route::post('/reset', [CsrfLabController::class, 'resetDemo'])
+        ->name('reset');
+});
+
+Route::post('/csrf-lab/vulnerable-transfer', [CsrfLabController::class, 'vulnerableTransfer'])
+    ->name('csrf-lab.vulnerable-transfer')
+    ->withoutMiddleware([\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class]);
+
+// Route untuk demo PROTECTED transfer (DENGAN CSRF - akan return 419 jika tanpa token)
+Route::post('/csrf-lab/protected-transfer', [CsrfLabController::class, 'protectedTransfer'])
+    ->name('csrf-lab.protected-transfer');
